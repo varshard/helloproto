@@ -3,22 +3,22 @@ package addressbook
 import (
 	"context"
 	"time"
-
-	pb "github.com/varshard/helloproto/addressbook"
 )
 
-func AddPerson(client pb.AddressBookClient, person pb.Person) (*pb.AddPersonResponse, error) {
+func AddPerson(client AddressBookClient, person Person) (*AddPersonResponse, error) {
 	ctx, cancel := makeContext()
 	defer cancel()
+
+	// ads.Contacts = append(ads.Contacts, person)
 
 	return client.AddPerson(ctx, &person)
 }
 
-func ListAddressBook(client pb.AddressBookClient) (*pb.ListAddressBookResponse, error) {
+func ListAddressBook(client AddressBookClient) (*ListAddressBookResponse, error) {
 	ctx, cancel := makeContext()
 	defer cancel()
 
-	req := pb.ListAddressBookRequest{}
+	req := ListAddressBookRequest{}
 	return client.ListAddressBook(ctx, &req)
 }
 

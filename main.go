@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/varshard/helloproto/client"
 	"github.com/varshard/helloproto/server"
 
@@ -11,15 +9,20 @@ import (
 
 func main() {
 	args := os.Args
-	fmt.Printf("args %s\n", args[1])
 	switch args[1] {
 	case "server":
 		{
-			server.StartServer()
+			switch args[2] {
+			case "addressbook":
+				server.StartAddressBookServer()
+			}
 		}
 	case "client":
 		{
-			client.StartClient(args[2:])
+			switch args[2] {
+			case "addressbook":
+				client.StartAddressBookClient(args[3:])
+			}
 		}
 	}
 }
