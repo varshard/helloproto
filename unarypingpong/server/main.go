@@ -13,7 +13,7 @@ import (
 type PingPongServerImpl struct {
 }
 
-func (s *PingPongServerImpl) UnaryPing(ctx context.Context, ping *pb.Ping) (*pb.Pong, error) {
+func (s *PingPongServerImpl) StartPing(ctx context.Context, ping *pb.Ping) (*pb.Pong, error) {
 	fmt.Println("Ping Received")
 
 	resp := pb.Pong{

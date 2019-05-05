@@ -19,7 +19,7 @@ func SendPing(client pb.PingPongClient) (*pb.Pong, error) {
 		Id:      1,
 		Message: "Ping",
 	}
-	pong, err := client.UnaryPing(ctx, &ping)
+	pong, err := client.StartPing(ctx, &ping)
 	statusCode := status.Code(err)
 	if statusCode != codes.OK {
 		return nil, err

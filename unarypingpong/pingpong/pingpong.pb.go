@@ -132,9 +132,9 @@ var fileDescriptor_1cfbf639ab46154b = []byte{
 	0xb8, 0x58, 0x02, 0x32, 0xf3, 0xd2, 0x85, 0xf8, 0xb8, 0x98, 0x32, 0x53, 0x24, 0x18, 0x15, 0x18,
 	0x35, 0x58, 0x83, 0x98, 0x32, 0x53, 0x84, 0x24, 0xb8, 0xd8, 0x73, 0x53, 0x8b, 0x8b, 0x13, 0xd3,
 	0x53, 0x25, 0x98, 0x14, 0x18, 0x35, 0x38, 0x83, 0x60, 0x5c, 0xb0, 0x8e, 0x7c, 0x52, 0x74, 0x18,
-	0x99, 0x73, 0x71, 0x80, 0xec, 0x00, 0xeb, 0xd2, 0xe6, 0xe2, 0x0c, 0xcd, 0x4b, 0x2c, 0xaa, 0x84,
+	0x99, 0x73, 0x71, 0x80, 0xec, 0x00, 0xeb, 0xd2, 0xe6, 0xe2, 0x0c, 0x2e, 0x49, 0x2c, 0x2a, 0x81,
 	0x58, 0xaa, 0x07, 0x77, 0x17, 0x88, 0x2f, 0x85, 0xcc, 0xcf, 0xcf, 0x4b, 0x4f, 0x62, 0x03, 0xbb,
-	0xd6, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x92, 0x22, 0xd7, 0xb8, 0xbf, 0x00, 0x00, 0x00,
+	0xd6, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x39, 0x66, 0x3f, 0x51, 0xbf, 0x00, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -149,7 +149,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type PingPongClient interface {
-	UnaryPing(ctx context.Context, in *Ping, opts ...grpc.CallOption) (*Pong, error)
+	StartPing(ctx context.Context, in *Ping, opts ...grpc.CallOption) (*Pong, error)
 }
 
 type pingPongClient struct {
@@ -160,9 +160,9 @@ func NewPingPongClient(cc *grpc.ClientConn) PingPongClient {
 	return &pingPongClient{cc}
 }
 
-func (c *pingPongClient) UnaryPing(ctx context.Context, in *Ping, opts ...grpc.CallOption) (*Pong, error) {
+func (c *pingPongClient) StartPing(ctx context.Context, in *Ping, opts ...grpc.CallOption) (*Pong, error) {
 	out := new(Pong)
-	err := c.cc.Invoke(ctx, "/pingpong.PingPong/UnaryPing", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pingpong.PingPong/StartPing", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -171,35 +171,35 @@ func (c *pingPongClient) UnaryPing(ctx context.Context, in *Ping, opts ...grpc.C
 
 // PingPongServer is the server API for PingPong service.
 type PingPongServer interface {
-	UnaryPing(context.Context, *Ping) (*Pong, error)
+	StartPing(context.Context, *Ping) (*Pong, error)
 }
 
 // UnimplementedPingPongServer can be embedded to have forward compatible implementations.
 type UnimplementedPingPongServer struct {
 }
 
-func (*UnimplementedPingPongServer) UnaryPing(ctx context.Context, req *Ping) (*Pong, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UnaryPing not implemented")
+func (*UnimplementedPingPongServer) StartPing(ctx context.Context, req *Ping) (*Pong, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartPing not implemented")
 }
 
 func RegisterPingPongServer(s *grpc.Server, srv PingPongServer) {
 	s.RegisterService(&_PingPong_serviceDesc, srv)
 }
 
-func _PingPong_UnaryPing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _PingPong_StartPing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Ping)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PingPongServer).UnaryPing(ctx, in)
+		return srv.(PingPongServer).StartPing(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pingpong.PingPong/UnaryPing",
+		FullMethod: "/pingpong.PingPong/StartPing",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PingPongServer).UnaryPing(ctx, req.(*Ping))
+		return srv.(PingPongServer).StartPing(ctx, req.(*Ping))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -209,8 +209,8 @@ var _PingPong_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*PingPongServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "UnaryPing",
-			Handler:    _PingPong_UnaryPing_Handler,
+			MethodName: "StartPing",
+			Handler:    _PingPong_StartPing_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
