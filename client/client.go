@@ -3,7 +3,10 @@ package client
 import (
 	"fmt"
 
-	addressbook "github.com/varshard/helloproto/addressbook"
+	"strconv"
+
+	"github.com/varshard/helloproto/addressbook"
+	"github.com/varshard/helloproto/pingpong"
 	"google.golang.org/grpc"
 )
 
@@ -36,4 +39,27 @@ func StartAddressBookClient(args []string) {
 
 		fmt.Printf("success: %d\n", len(resp.GetPersons()))
 	}
+}
+
+func StartPingPongClient(args []string) {
+	opts := []grpc.DialOption{grpc.WithInsecure()}
+	conn, err := grpc.Dial("127.0.0.1:9001", opts...)
+	if err != nil {
+		panic(err)
+	}
+
+	client := pingpong.NewPingPongClient(conn)
+
+	times, err := strconv.Atoi(args[0])
+	if err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < times; i++ {
+		err = pingpong.StreamPing(client, int32(i))
+		if err != nil {
+			panic(err)
+		}
+	}
+	fmt.Println("Finish Pinging")
 }

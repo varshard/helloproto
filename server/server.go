@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net"
 
-	addressbook "github.com/varshard/helloproto/addressbook"
+	"github.com/varshard/helloproto/addressbook"
+	"github.com/varshard/helloproto/pingpong"
 
 	"google.golang.org/grpc"
 )
@@ -21,9 +22,23 @@ func StartAddressBookServer() {
 
 	grpcServer := grpc.NewServer()
 	addressbook.RegisterAddressBookServer(grpcServer, &server)
-	fmt.Println("before serve")
+
 	if err = grpcServer.Serve(lis); err != nil {
 		panic(err)
 	}
-	fmt.Println("served")
+	fmt.Println("addressbook started")
+}
+
+func StartPingPongServer() {
+	server := pingpong.PingPongServerImpl{}
+
+	lis, err := net.Listen("tcp", "localhost:9001")
+
+	grpcServer := grpc.NewServer()
+	pingpong.RegisterPingPongServer(grpcServer, &server)
+
+	if err = grpcServer.Serve(lis); err != nil {
+		panic(err)
+	}
+	fmt.Println("pingpong started")
 }

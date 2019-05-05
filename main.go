@@ -15,6 +15,8 @@ func main() {
 			switch args[2] {
 			case "addressbook":
 				server.StartAddressBookServer()
+			case "pingpong":
+				server.StartPingPongServer()
 			}
 		}
 	case "client":
@@ -22,6 +24,8 @@ func main() {
 			switch args[2] {
 			case "addressbook":
 				client.StartAddressBookClient(args[3:])
+			case "pingpong":
+				client.StartPingPongClient(args[3:])
 			}
 		}
 	}
