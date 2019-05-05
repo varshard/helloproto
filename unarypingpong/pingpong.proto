@@ -1,0 +1,16 @@
+syntax="proto3";
+package pingpong;
+
+message Ping {
+    int32 id = 1;
+    string message = 2;
+}
+
+message Pong {
+    int32 id = 1;
+    string message = 2;
+}
+
+service PingPong {
+    rpc UnaryPing (Ping) returns (Pong);
+}
