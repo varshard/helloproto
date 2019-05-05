@@ -12,5 +12,5 @@ message Pong {
 }
 
 service PingPong {
-    rpc UnaryPing (Ping) returns (Pong);
+    rpc StartPing (Ping) returns (Pong);
 }
