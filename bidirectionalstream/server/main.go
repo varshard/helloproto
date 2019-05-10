@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"io"
 	"net"
+
 	"google.golang.org/grpc"
 
-	pb "github.com/varshard/helloproto/pingpong"
+	pb "github.com/varshard/helloproto/bidirectionalstream/pingpong"
 )
 
 type PingPongServerImpl struct {
@@ -29,6 +30,15 @@ func (s *PingPongServerImpl) StartPing(stream pb.PingPong_StartPingServer) error
 			Id:      ping.Id,
 		}
 		stream.Send(&resp)
+
+		resp2 := pb.Pong{
+			Message: "Double Pongs",
+			Id:      ping.Id,
+		}
+
+		// Server streaming can response as many message as it want for a single request.
+		// In fact, it can even response even when it hasn't received any message.
+		stream.Send(&resp2)
 	}
 
 	return nil
