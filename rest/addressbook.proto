@@ -1,0 +1,57 @@
+syntax="proto3";
+package addressbook;
+
+import "google/api/annotations.proto";
+
+message Person {
+    enum PhoneType {
+        MOBILE = 0;
+        HOME = 1;
+        WORK = 2;
+    }
+
+    message PhoneNumber {
+        string number = 1;
+        PhoneType type = 2;
+    }
+
+    string first_name = 1;
+    string last_name = 2;
+    repeated PhoneNumber phones = 4;
+}
+
+message AddPersonResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message GetPersonRequest {
+    int32 id = 1;
+}
+
+message ListAddressBookRequest {
+}
+
+message ListAddressBookResponse {
+    bool success = 1;
+    repeated Person persons = 2;
+}
+
+service AddressBook {
+    rpc AddPerson (Person) returns (AddPersonResponse) {
+        option (google.api.http) = {
+            post: "/contacts"
+            body: "*"
+        };
+    };
+    rpc GetPerson (GetPersonRequest) returns (Person) {
+        option (google.api.http) = {
+            get: "/contacts/{id}"
+        };
+    }
+    rpc ListAddressBook (ListAddressBookRequest) returns (ListAddressBookResponse) {
+        option (google.api.http) = {
+            get: "/contacts"
+        };
+    };
+}
